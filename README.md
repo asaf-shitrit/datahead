@@ -43,8 +43,6 @@ datahead/
 ├── tests/                 # Test files
 │   ├── test_pipeline.py
 │   └── test_mcp.py
-├── docs/                  # Documentation
-│   └── README.md
 ├── docker-compose.yml     # Docker setup
 ├── start_docker.sh        # Docker startup script
 └── README.md             # This file
