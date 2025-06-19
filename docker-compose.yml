@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: music_embedding_chromadb
+    ports:
+      - "8000:8000"  # ChromaDB API port
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
+      - CHROMA_SERVER_AUTH_CREDENTIALS_FILE=/chroma/chroma_auth.json
+      - CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER=chromadb.auth.providers.HtpasswdFileServerAuthProvider
+      - CHROMA_SERVER_AUTH_PROVIDER=chromadb.auth.providers.HtpasswdFileServerAuthProvider
+    volumes:
+      - chromadb_data:/chroma/chroma
+      - ./chroma_auth.json:/chroma/chroma_auth.json:ro  # Optional: for authentication
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Music Embedding API
+  music-api:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    container_name: music_embedding_api
+    ports:
+      - "8080:8080"  # FastAPI app port
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - VECTOR_DB_PATH=/app/data/vector_db
+      - MUSIC_FILES_PATH=/app/data/music_files
+    volumes:
+      - music_data:/app/data
+      - ./src:/app/src:ro  # Mount source code for development
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a simple web interface for ChromaDB
+  chromadb-web:
+    image: chromadb/chroma:latest
+    container_name: music_embedding_chromadb_web
+    ports:
+      - "3000:3000"  # ChromaDB Web UI port
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=3000
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
+    volumes:
+      - chromadb_data:/chroma/chroma
+    restart: unless-stopped
+    depends_on:
+      - chromadb
+
+volumes:
+  chromadb_data:
+    driver: local
+  music_data:
+    driver: local 
