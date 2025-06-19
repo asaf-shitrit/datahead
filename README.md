@@ -1,5 +1,7 @@
 # Music Embedding API
 
+> **Note**: The name "datahead" is inspired by the band Radiohead - a playful nod to processing music data! 🎸
+
 A FastAPI wrapper for a music embedding pipeline that can upload music files and find similar music using vector similarity search. **Now with MCP (Model Context Protocol) support for LLM integration!**
 
 ## Features
