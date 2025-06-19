@@ -1,4 +1,4 @@
-# Music Embedding API
+# datahead
 
 > **Note**: The name "datahead" is inspired by the band Radiohead - a playful nod to processing music data! 🎸
 
@@ -71,7 +71,7 @@ chmod +x start_docker.sh
 
 This will start:
 - **ChromaDB** on port 8000
-- **Music Embedding API** on port 8080
+- **datahead** on port 8080
 - **ChromaDB Web UI** on port 3000
 
 ### 3. Access the API
@@ -129,7 +129,7 @@ python scripts/main.py
 
 ## MCP (Model Context Protocol) Server
 
-The Music Embedding API also includes an MCP server that allows LLMs to use music similarity search as tools. This enables natural language interactions with your music database.
+datahead also includes an MCP server that allows LLMs to use music similarity search as tools. This enables natural language interactions with your music database.
 
 ### MCP Tools Available
 
