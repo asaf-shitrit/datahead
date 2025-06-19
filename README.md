@@ -1,5 +1,7 @@
 # Datahead
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > **Note**: The name "datahead" is inspired by the band Radiohead - a playful nod to processing music data! 🎸
 
 A FastAPI wrapper for a music embedding pipeline that can upload music files and find similar music using vector similarity search. **Now with MCP (Model Context Protocol) support for LLM integration!**
@@ -433,7 +435,7 @@ docker-compose logs -f chromadb
 
 ## License
 
-[Your License Here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
